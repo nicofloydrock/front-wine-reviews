@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vinoteca Elite - Wine Reviews</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" 
+          rel="stylesheet">
+    <style>
+        * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-bg: #0a0a0a;
+  --secondary-bg: #1a1a1a;
+  --card-bg: rgba(30, 30, 30, 0.8);
+  --accent-gold: #d4af37;
+  --accent-wine: #722f37;
+  --accent-purple: #6a4c93;
+  --text-primary: #ffffff;
+  --text-secondary: #b8b8b8;
+  --text-muted: #808080;
+  --border-color: rgba(212, 175, 55, 0.2);
+  --glow-gold: rgba(212, 175, 55, 0.3);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--primary-bg);
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Animated Background */
+.bg-animation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: linear-gradient(45deg,
+      var(--primary-bg) 0%,
+      var(--secondary-bg) 25%,
+      var(--accent-wine) 50%,
+      var(--primary-bg) 75%,
+      var(--secondary-bg) 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Floating particles */
+.particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.particle {
+  position: absolute;
+  background: var(--accent-gold);
+  border-radius: 50%;
+  opacity: 0.1;
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0.1;
+  }
+
+  50% {
+    transform: translateY(-20px) rotate(180deg);
+    opacity: 0.3;
+  }
+}
+
+/* Header */
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-color);
+  z-index: 1000;
+  padding: 1rem 0;
+}
+
+.nav {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-wine));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--accent-gold);
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+.nav-links a:hover {
+  color: var(--accent-gold);
+}
+
+/* Hero Section */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  padding: 0 2rem;
+}
+
+.hero-content {
+  max-width: 800px;
+  z-index: 2;
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 900;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, var(--text-primary), var(--accent-gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: titleGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlow {
+  from {
+    text-shadow: 0 0 20px var(--glow-gold);
+  }
+
+  to {
+    text-shadow: 0 0 40px var(--glow-gold), 0 0 60px var(--glow-gold);
+  }
+}
+
+.hero-subtitle {
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  font-weight: 300;
+}
+
+.cta-button {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-wine));
+  color: var(--text-primary);
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.cta-button:hover::before {
+  left: 100%;
+}
+
+.cta-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(212, 175, 55, 0.5);
+}
+
+/* Main Content */
+.main-content {
+  padding: 4rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  text-align: center;
+  margin-bottom: 3rem;
+  color: var(--accent-gold);
+}
+
+/* Search and Filters */
+.search-section {
+  background: var(--card-bg);
+  border-radius: 20px;
+  padding: 2rem;
+  margin-bottom: 3rem;
+  border: 1px solid var(--border-color);
+  backdrop-filter: blur(20px);
+}
+
+.search-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.input-group {
+  position: relative;
+}
+
+.input-group input,
+.input-group select {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1rem;
+  color: var(--text-primary);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 0 3px var(--glow-gold);
+}
+
+.input-group label {
+  position: absolute;
+  top: -10px;
+  left: 15px;
+  background: var(--card-bg);
+  padding: 0 10px;
+  font-size: 0.9rem;
+  color: var(--accent-gold);
+  font-weight: 500;
+}
+
+.search-button {
+  background: linear-gradient(135deg, var(--accent-purple), var(--accent-wine));
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.search-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(106, 76, 147, 0.4);
+}
+
+/* Wine Cards */
+.wine-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.wine-card {
+  background: var(--card-bg);
+  border-radius: 20px;
+  padding: 2rem;
+  border: 1px solid var(--border-color);
+  backdrop-filter: blur(20px);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.wine-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent-gold), var(--accent-wine), var(--accent-purple));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.wine-card:hover::before {
+  opacity: 1;
+}
+
+.wine-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  border-color: var(--accent-gold);
+}
+
+.wine-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 1rem;
+}
+
+.wine-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
+  flex: 1;
+  margin-right: 1rem;
+}
+
+.wine-score {
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-wine));
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  min-width: 60px;
+  text-align: center;
+}
+
+.wine-meta {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.meta-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.25rem;
+}
+
+.meta-value {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.wine-description {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-top: 1rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.wine-price {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(106, 76, 147, 0.9);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 15px;
+  font-weight: 600;
+}
+
+/* Loading animation */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
+.loader {
+  width: 50px;
+  height: 50px;
+  border: 3px solid var(--border-color);
+  border-top: 3px solid var(--accent-gold);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Stats Section */
+.stats-section {
+  background: var(--card-bg);
+  border-radius: 20px;
+  padding: 2rem;
+  margin: 3rem 0;
+  border: 1px solid var(--border-color);
+  backdrop-filter: blur(20px);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+}
+
+.stat-card {
+  text-align: center;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  border: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  display: block;
+}
+
+.stat-label {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 3rem 0;
+}
+
+.pagination button {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 0.75rem 1.25rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.pagination button:hover,
+.pagination button.active {
+  background: var(--accent-gold);
+  color: var(--primary-bg);
+  border-color: var(--accent-gold);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav {
+    padding: 0 1rem;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .hero-title {
+    font-size: 3rem;
+  }
+
+  .search-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .wine-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  z-index: 2000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  padding: 2rem;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal {
+  background: var(--card-bg);
+  border-radius: 25px;
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  border: 2px solid var(--border-color);
+  position: relative;
+  transform: scale(0.8) translateY(50px);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(20px);
+}
+
+.modal-overlay.active .modal {
+  transform: scale(1) translateY(0);
+}
+
+.modal-header {
+  background: linear-gradient(135deg, var(--accent-wine), var(--accent-purple));
+  padding: 2rem;
+  border-radius: 25px 25px 0 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.modal-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+  animation: modalShine 4s ease-in-out infinite;
+}
+
+@keyframes modalShine {
+
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(180deg);
+  }
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  z-index: 10;
+}
+
+.modal-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: rotate(90deg);
+  border-color: var(--accent-gold);
+}
+
+.modal-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 2;
+}
+
+.modal-subtitle {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.modal-content {
+  padding: 2.5rem;
+}
+
+.modal-score-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.modal-score-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-wine));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: white;
+  position: relative;
+  box-shadow: 0 15px 35px rgba(212, 175, 55, 0.3);
+}
+
+.modal-score-circle::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, var(--accent-gold), var(--accent-wine), var(--accent-purple), var(--accent-gold));
+  background-size: 200% 200%;
+  animation: scoreGlow 3s ease-in-out infinite;
+  z-index: -1;
+}
+
+@keyframes scoreGlow {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.modal-details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.modal-detail-item {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1.5rem;
+  border-radius: 15px;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.modal-detail-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-3px);
+  border-color: var(--accent-gold);
+}
+
+.modal-detail-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+}
+
+.modal-detail-value {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.modal-description {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 2rem;
+  border-radius: 15px;
+  border-left: 4px solid var(--accent-gold);
+  margin: 2rem 0;
+}
+
+.modal-description h3 {
+  color: var(--accent-gold);
+  font-family: 'Playfair Display', serif;
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+}
+
+.modal-description p {
+  color: var(--text-secondary);
+  line-height: 1.8;
+  font-size: 1.1rem;
+}
+
+.modal-price-tag {
+  position: absolute;
+  top: -15px;
+  right: 2rem;
+  background: linear-gradient(135deg, var(--accent-purple), var(--accent-wine));
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 1.3rem;
+  box-shadow: 0 10px 25px rgba(106, 76, 147, 0.4);
+  z-index: 5;
+}
+
+.modal-taster-info {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(114, 47, 55, 0.1));
+  padding: 1.5rem;
+  border-radius: 15px;
+  margin-top: 2rem;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.modal-taster-info h4 {
+  color: var(--accent-gold);
+  margin-bottom: 0.5rem;
+  font-family: 'Playfair Display', serif;
+}
+
+.modal-taster-info p {
+  color: var(--text-secondary);
+}
+
+/* Wine card cursor pointer */
+.wine-card {
+  cursor: pointer;
+}
+
+.wine-card:hover {
+  transform: translateY(-10px) scale(1.02);
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--primary-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent-gold);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-wine);
+}
+
+/* Modal responsive */
+@media (max-width: 768px) {
+  .modal {
+    margin: 1rem;
+    max-height: 95vh;
+  }
+
+  .modal-header {
+    padding: 1.5rem;
+  }
+
+  .modal-title {
+    font-size: 1.8rem;
+  }
+
+  .modal-content {
+    padding: 1.5rem;
+  }
+
+  .modal-details-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .modal-score-circle {
+    width: 100px;
+    height: 100px;
+    font-size: 2rem;
+  }
+}
+    </style>
+</head>
+<body>
+<script type="module" data-zeno-bot="embed" src="https://zenoembed.textcortex.com/zeno-bot.js?embed_id=emb_01k4c4tg8gfhd89tzrs1z5kng7"> </script>    
+
+<div class="bg-animation"></div>
+
+    
+    <!-- Floating Particles -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">Vinoteca Elite</div>
+            <ul class="nav-links">
+                <li><a href="#home">Inicio</a></li>
+                <li><a href="#wines">Vinos</a></li>
+                <li><a href="#stats">Estadísticas</a></li>
+                <li><a href="#about">Acerca de</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1 class="hero-title">Descubre Vinos Extraordinarios</h1>
+            <p class="hero-subtitle">Explora más de 130,000 reseñas profesionales de vinos de todo el mundo</p>
+            <a href="#wines" class="cta-button">Explorar Colección</a>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Search Section -->
+        <section class="search-section" id="wines">
+            <h2 class="section-title">Buscar Vinos</h2>
+            <div class="search-grid">
+                <div class="input-group">
+                    <label>Búsqueda</label>
+                    <input type="text" id="searchText" placeholder="Buscar por nombre, descripción...">
+                </div>
+                <div class="input-group">
+                    <label>País</label>
+                    <select id="countryFilter">
+                        <option value="">Todos los países</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Variedad</label>
+                    <select id="varietyFilter">
+                        <option value="">Todas las variedades</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Puntuación Mínima</label>
+                    <input type="number" id="minPoints" min="80" max="100" placeholder="80">
+                </div>
+                <div class="input-group">
+                    <label>Precio Máximo</label>
+                    <input type="number" id="maxPrice" min="0" placeholder="Sin límite">
+                </div>
+                <div class="input-group">
+                    <label>Ordenar por</label>
+                    <select id="sortBy">
+                        <option value="points">Puntuación</option>
+                        <option value="price">Precio</option>
+                        <option value="title">Nombre</option>
+                        <option value="country">País</option>
+                    </select>
+                </div>
+            </div>
+            <button class="search-button" onclick="searchWines()">Buscar Vinos</button>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats-section" id="stats">
+            <h2 class="section-title">Estadísticas</h2>
+            <div class="stats-grid" id="statsGrid">
+                <!-- Stats will be loaded here -->
+            </div>
+        </section>
+
+    <!-- Wine Results -->
+        <section id="wineResults">
+            <div class="wine-grid" id="wineGrid">
+                <!-- Wine cards will be loaded here -->
+            </div>
+            <div class="pagination" id="pagination">
+                <!-- Pagination will be loaded here -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Wine Detail Modal -->
+    <div class="modal-overlay" id="wineModal" onclick="closeModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-close" onclick="closeModal()">&times;</div>
+                <div class="modal-price-tag" id="modalPrice" style="display: none;"></div>
+                <h2 class="modal-title" id="modalTitle"></h2>
+                <p class="modal-subtitle" id="modalSubtitle"></p>
+            </div>
+            <div class="modal-content">
+                <div class="modal-score-section">
+                    <div class="modal-score-circle" id="modalScore"></div>
+                </div>
+                
+                <div class="modal-details-grid" id="modalDetailsGrid">
+                    <!-- Details will be populated here -->
+                </div>
+                
+                <div class="modal-description">
+                    <h3>Descripción del Sommelier</h3>
+                    <p id="modalDescription"></p>
+                </div>
+                
+                <div class="modal-taster-info" id="modalTasterInfo" style="display: none;">
+                    <h4>Catador Profesional</h4>
+                    <p id="modalTasterName"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // API Configuration
+        const API_BASE_URL = 'http://api-wine-reviews-production.up.railway.app';
+        
+        let currentPage = 1;
+        let currentFilters = {};
+        let exchangeRate = 950; // Tasa de cambio por defecto USD a CLP
+
+        // Traducciones
+        const translations = {
+            countries: {
+                'US': 'Estados Unidos',
+                'Italy': 'Italia',
+                'France': 'Francia',
+                'Spain': 'España',
+                'Portugal': 'Portugal',
+                'Chile': 'Chile',
+                'Argentina': 'Argentina',
+                'Australia': 'Australia',
+                'Germany': 'Alemania',
+                'Austria': 'Austria',
+                'New Zealand': 'Nueva Zelanda',
+                'South Africa': 'Sudáfrica',
+                'Greece': 'Grecia',
+                'Israel': 'Israel',
+                'Lebanon': 'Líbano',
+                'Turkey': 'Turquía',
+                'Hungary': 'Hungría',
+                'Bulgaria': 'Bulgaria',
+                'Romania': 'Rumania',
+                'Croatia': 'Croacia',
+                'Slovenia': 'Eslovenia',
+                'Serbia': 'Serbia',
+                'Macedonia': 'Macedonia',
+                'Moldova': 'Moldavia',
+                'Ukraine': 'Ucrania',
+                'Georgia': 'Georgia',
+                'Armenia': 'Armenia',
+                'Morocco': 'Marruecos',
+                'Tunisia': 'Túnez',
+                'Algeria': 'Argelia',
+                'Egypt': 'Egipto',
+                'India': 'India',
+                'China': 'China',
+                'Japan': 'Japón',
+                'Thailand': 'Tailandia',
+                'Brazil': 'Brasil',
+                'Uruguay': 'Uruguay',
+                'Peru': 'Perú',
+                'Bolivia': 'Bolivia',
+                'Mexico': 'México',
+                'Canada': 'Canadá'
+            },
+            varieties: {
+                'Pinot Noir': 'Pinot Noir',
+                'Chardonnay': 'Chardonnay',
+                'Cabernet Sauvignon': 'Cabernet Sauvignon',
+                'Red Blend': 'Mezcla Tinta',
+                'Bordeaux-style Red Blend': 'Mezcla Tinta Estilo Burdeos',
+                'Riesling': 'Riesling',
+                'Sauvignon Blanc': 'Sauvignon Blanc',
+                'Syrah': 'Syrah',
+                'Rosé': 'Rosado',
+                'Merlot': 'Merlot',
+                'Nebbiolo': 'Nebbiolo',
+                'Portuguese Red': 'Tinto Portugués',
+                'White Blend': 'Mezcla Blanca',
+                'Sparkling Blend': 'Espumoso Mezcla',
+                'Gewürztraminer': 'Gewürztraminer',
+                'Pinot Gris': 'Pinot Gris',
+                'Tempranillo': 'Tempranillo',
+                'Sangiovese': 'Sangiovese',
+                'Moscato': 'Moscatel',
+                'Grüner Veltliner': 'Grüner Veltliner',
+                'Portuguese White': 'Blanco Portugués',
+                'Albariño': 'Albariño',
+                'Champagne Blend': 'Mezcla Champagne',
+                'Rhône-style Red Blend': 'Mezcla Tinta Estilo Ródano',
+                'Petite Sirah': 'Petite Sirah',
+                'Viognier': 'Viognier',
+                'Pinot Blanc': 'Pinot Blanc',
+                'Barbera': 'Barbera',
+                'Corvina, Rondinella, Molinara': 'Corvina, Rondinella, Molinara',
+                'Glera': 'Glera',
+                'Tempranillo-Merlot': 'Tempranillo-Merlot',
+                'Frappato': 'Frappato',
+                'Nerello Mascalese': 'Nerello Mascalese'
+            },
+            regions: {
+                'California': 'California',
+                'Washington': 'Washington',
+                'Oregon': 'Oregón',
+                'New York': 'Nueva York',
+                'Tuscany': 'Toscana',
+                'Piedmont': 'Piamonte',
+                'Veneto': 'Véneto',
+                'Sicily & Sardinia': 'Sicilia y Cerdeña',
+                'Central Italy': 'Italia Central',
+                'Southern Italy': 'Sur de Italia',
+                'Northeast Italy': 'Noreste de Italia',
+                'Bordeaux': 'Burdeos',
+                'Burgundy': 'Borgoña',
+                'Champagne': 'Champaña',
+                'Loire Valley': 'Valle del Loira',
+                'Rhône Valley': 'Valle del Ródano',
+                'Alsace': 'Alsacia',
+                'Languedoc-Roussillon': 'Languedoc-Rosellón',
+                'Northern Spain': 'Norte de España',
+                'Douro': 'Duero',
+                'Central Coast': 'Costa Central',
+                'Napa Valley': 'Valle de Napa',
+                'Sonoma County': 'Condado de Sonoma',
+                'Willamette Valley': 'Valle de Willamette'
+            }
+        };
+
+        // Traducir texto
+        function translateText(text, category) {
+            if (!text) return text;
+            return translations[category] && translations[category][text] ? translations[category][text] : text;
+        }
+
+        // Formatear precio en CLP
+        function formatPrice(usdPrice) {
+            if (!usdPrice) return null;
+            const clpPrice = Math.round(usdPrice * exchangeRate);
+            return {
+                usd: `${usdPrice} USD`,
+                clp: `${clpPrice.toLocaleString('es-CL')} CLP`,
+                formatted: `${clpPrice.toLocaleString('es-CL')} CLP`
+            };
+        }
+
+        // Obtener tasa de cambio actual
+        async function fetchExchangeRate() {
+            try {
+                // API gratuita para tasa de cambio USD a CLP
+                const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+                const data = await response.json();
+                if (data.rates && data.rates.CLP) {
+                    exchangeRate = data.rates.CLP;
+                    console.log(`Tasa de cambio actualizada: 1 USD = ${exchangeRate} CLP`);
+                }
+            } catch (error) {
+                console.warn('No se pudo obtener la tasa de cambio actual, usando tasa por defecto:', exchangeRate);
+                // API alternativa
+                try {
+                    const response = await fetch('https://api.freeforexapi.com/api/live?pairs=USDCLP');
+                    const data = await response.json();
+                    if (data.rates && data.rates.USDCLP && data.rates.USDCLP.rate) {
+                        exchangeRate = data.rates.USDCLP.rate;
+                        console.log(`Tasa de cambio actualizada (API alternativa): 1 USD = ${exchangeRate} CLP`);
+                    }
+                } catch (altError) {
+                    console.warn('APIs de tasa de cambio no disponibles, usando tasa por defecto');
+                }
+            }
+        }
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            fetchExchangeRate(); // Obtener tasa de cambio actual
+            loadStats();
+            loadFilters();
+            searchWines();
+            
+            // Smooth scrolling
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+
+        // Create floating particles
+        function createParticles() {
+            const particles = document.getElementById('particles');
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.width = Math.random() * 4 + 2 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 6 + 4) + 's';
+                particles.appendChild(particle);
+            }
+        }
+
+        // Load statistics
+        async function loadStats() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/wines/stats`);
+                const stats = await response.json();
+                displayStats(stats);
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        // Display statistics
+        function displayStats(stats) {
+            const statsGrid = document.getElementById('statsGrid');
+            statsGrid.innerHTML = `
+                <div class="stat-card">
+                    <span class="stat-number">${stats.totalWines?.toLocaleString() || '0'}</span>
+                    <span class="stat-label">Vinos Totales</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">${stats.avgPoints?.toFixed(1) || '0'}</span>
+                    <span class="stat-label">Puntuación Promedio</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">$${stats.avgPrice?.toFixed(0) || '0'}</span>
+                    <span class="stat-label">Precio Promedio</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">${stats.maxPoints || '0'}</span>
+                    <span class="stat-label">Máxima Puntuación</span>
+                </div>
+            `;
+        }
+
+        // Load filter options
+        async function loadFilters() {
+            try {
+                const [countriesResponse, varietiesResponse] = await Promise.all([
+                    fetch(`${API_BASE_URL}/wines/stats/countries`),
+                    fetch(`${API_BASE_URL}/wines/stats/varieties`)
+                ]);
+                
+                const countries = await countriesResponse.json();
+                const varieties = await varietiesResponse.json();
+                
+                populateSelect('countryFilter', countries, '_id');
+                populateSelect('varietyFilter', varieties, '_id');
+            } catch (error) {
+                console.error('Error loading filters:', error);
+            }
+        }
+
+        // Populate select options
+        function populateSelect(selectId, options, valueField) {
+            const select = document.getElementById(selectId);
+            const currentValue = select.value;
+            
+            // Keep the "All" option and add new ones
+            const allOption = select.querySelector('option[value=""]');
+            select.innerHTML = '';
+            select.appendChild(allOption);
+            
+            options.slice(0, 20).forEach(option => {
+                const optionElement = document.createElement('option');
+                optionElement.value = option[valueField];
+                
+                // Traducir nombres para mostrar
+                let displayName = option[valueField];
+                if (selectId === 'countryFilter') {
+                    displayName = translateText(option[valueField], 'countries');
+                } else if (selectId === 'varietyFilter') {
+                    displayName = translateText(option[valueField], 'varieties');
+                }
+                
+                optionElement.textContent = `${displayName} (${option.count})`;
+                select.appendChild(optionElement);
+            });
+            
+            select.value = currentValue;
+        }
+
+        // Search wines
+        async function searchWines(page = 1) {
+            currentPage = page;
+            
+            // Collect filters
+            const filters = {
+                page: page,
+                limit: 12,
+                search: document.getElementById('searchText').value,
+                country: document.getElementById('countryFilter').value,
+                variety: document.getElementById('varietyFilter').value,
+                min_points: document.getElementById('minPoints').value,
+                max_price: document.getElementById('maxPrice').value,
+                sortBy: document.getElementById('sortBy').value,
+                sortOrder: 'desc'
+            };
+
+            // Remove empty filters
+            Object.keys(filters).forEach(key => {
+                if (!filters[key]) delete filters[key];
+            });
+
+            currentFilters = filters;
+
+            try {
+                showLoading();
+                const queryString = new URLSearchParams(filters).toString();
+                const response = await fetch(`${API_BASE_URL}/wines?${queryString}`);
+                const data = await response.json();
+                
+                displayWines(data.wines);
+                displayPagination(data);
+                hideLoading();
+                
+                // Scroll to wine results section after search (but not on page load)
+                if (page === 1 && (filters.search || filters.country || filters.variety || filters.min_points || filters.max_price)) {
+                    setTimeout(() => {
+                        document.getElementById('wineResults').scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'start' 
+                        });
+                    }, 300);
+                }
+            } catch (error) {
+                console.error('Error searching wines:', error);
+                hideLoading();
+            }
+        }
+
+        // Display wines
+        function displayWines(wines) {
+            const wineGrid = document.getElementById('wineGrid');
+            
+            if (!wines || wines.length === 0) {
+                wineGrid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 3rem;">
+                        <h3 style="color: var(--text-secondary);">No se encontraron vinos con los filtros seleccionados</h3>
+                    </div>
+                `;
+                return;
+            }
+
+            wineGrid.innerHTML = wines.map((wine, index) => `
+                <div class="wine-card" onclick="openWineModal('${wine._id}')" data-wine='${JSON.stringify(wine).replace(/'/g, "&#39;")}'>
+                    <div class="wine-header">
+                        <h3 class="wine-title">${wine.title}</h3>
+                        <div class="wine-score">${wine.points}</div>
+                    </div>
+                    <div class="wine-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">País</span>
+                            <span class="meta-value">${wine.country}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Variedad</span>
+                            <span class="meta-value">${wine.variety}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Región</span>
+                            <span class="meta-value">${wine.region_1 || wine.province || 'N/A'}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Bodega</span>
+                            <span class="meta-value">${wine.winery}</span>
+                        </div>
+                    </div>
+                    <p class="wine-description">${wine.description}</p>
+                    <p class="wine-description">Precio : $${wine.price}</p>
+                    
+                </div>
+            `).join('');
+        }
+
+        // Open wine modal
+        async function openWineModal(wineId) {
+            try {
+                // Get wine data from the card element
+                const wineCard = document.querySelector(`[onclick*="${wineId}"]`);
+                const wineData = JSON.parse(wineCard.getAttribute('data-wine').replace(/&#39;/g, "'"));
+                
+                populateModal(wineData);
+                document.getElementById('wineModal').classList.add('active');
+                document.body.style.overflow = 'hidden';
+            } catch (error) {
+                console.error('Error opening wine modal:', error);
+                // Fallback: try to fetch from API
+                try {
+                    const response = await fetch(`${API_BASE_URL}/wines/${wineId}`);
+                    const wine = await response.json();
+                    populateModal(wine);
+                    document.getElementById('wineModal').classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                } catch (fetchError) {
+                    console.error('Error fetching wine details:', fetchError);
+                }
+            }
+        }
+
+        // Populate modal with wine data
+        function populateModal(wine) {
+            // Header information
+            document.getElementById('modalTitle').textContent = wine.title;
+            document.getElementById('modalSubtitle').textContent = `${wine.winery} • ${wine.variety}`;
+            
+            // Price
+            const priceTag = document.getElementById('modalPrice');
+            if (wine.price) {
+                priceTag.textContent = `${wine.price}`;
+                priceTag.style.display = 'block';
+            } else {
+                priceTag.style.display = 'none';
+            }
+            
+            // Score
+            document.getElementById('modalScore').textContent = wine.points;
+            
+            // Details grid
+            const detailsGrid = document.getElementById('modalDetailsGrid');
+            detailsGrid.innerHTML = `
+                <div class="modal-detail-item">
+                    <div class="modal-detail-label">País</div>
+                    <div class="modal-detail-value">${wine.country}</div>
+                </div>
+                <div class="modal-detail-item">
+                    <div class="modal-detail-label">Región</div>
+                    <div class="modal-detail-value">${wine.region_1 || wine.province || 'No especificada'}</div>
+                </div>
+                <div class="modal-detail-item">
+                    <div class="modal-detail-label">Provincia</div>
+                    <div class="modal-detail-value">${wine.province || 'No especificada'}</div>
+                </div>
+                <div class="modal-detail-item">
+                    <div class="modal-detail-label">Variedad</div>
+                    <div class="modal-detail-value">${wine.variety}</div>
+                </div>
+                ${wine.designation ? `
+                <div class="modal-detail-item">
+                    <div class="modal-detail-label">Designación</div>
+                    <div class="modal-detail-value">${wine.designation}</div>
+                </div>
+                ` : ''}
+                ${wine.region_2 ? `
+                <div class="modal-detail-item">
+                    <div class="modal-detail-label">Sub-región</div>
+                    <div class="modal-detail-value">${wine.region_2}</div>
+                </div>
+                ` : ''}
+            `;
+            
+            // Description
+            document.getElementById('modalDescription').textContent = wine.description;
+            
+            // Taster information
+            const tasterInfo = document.getElementById('modalTasterInfo');
+            const tasterName = document.getElementById('modalTasterName');
+            
+            if (wine.taster_name) {
+                let tasterText = wine.taster_name;
+                if (wine.taster_twitter_handle) {
+                    tasterText += ` (${wine.taster_twitter_handle})`;
+                }
+                tasterName.textContent = tasterText;
+                tasterInfo.style.display = 'block';
+            } else {
+                tasterInfo.style.display = 'none';
+            }
+        }
+
+        // Close modal
+        function closeModal(event) {
+            if (event && event.target !== event.currentTarget && event.type !== 'click') return;
+            
+            document.getElementById('wineModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Display pagination
+        function displayPagination(data) {
+            const pagination = document.getElementById('pagination');
+            const { page, totalPages } = data;
+            
+            if (totalPages <= 1) {
+                pagination.innerHTML = '';
+                return;
+            }
+
+            let paginationHTML = '';
+            
+            // Previous button
+            if (page > 1) {
+                paginationHTML += `<button onclick="searchWines(${page - 1})">← Anterior</button>`;
+            }
+            
+            // Page numbers
+            const startPage = Math.max(1, page - 2);
+            const endPage = Math.min(totalPages, page + 2);
+            
+            for (let i = startPage; i <= endPage; i++) {
+                const activeClass = i === page ? 'active' : '';
+                paginationHTML += `<button class="${activeClass}" onclick="searchWines(${i})">${i}</button>`;
+            }
+            
+            // Next button
+            if (page < totalPages) {
+                paginationHTML += `<button onclick="searchWines(${page + 1})">Siguiente →</button>`;
+            }
+            
+            pagination.innerHTML = paginationHTML;
+        }
+
+        // Show loading
+        function showLoading() {
+            document.getElementById('wineGrid').innerHTML = `
+                <div class="loading" style="grid-column: 1/-1;">
+                    <div class="loader"></div>
+                </div>
+            `;
+        }
+
+        // Hide loading
+        function hideLoading() {
+            // Loading will be replaced by wine results
+        }
+    </script>
+</body>
+</html>
